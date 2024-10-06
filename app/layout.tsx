@@ -4,7 +4,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Agendamento Barbearia',
-  description: 'Agende já seu horário!'
+  description: 'Agende já seu horário!',
 };
 
 const inter_font = Inter({
