@@ -6,7 +6,7 @@ import { BookingItem } from '../_components/booking-item';
 import { db } from '../_lib/prisma';
 import { BarbershopItem } from './_components/barbershop-item';
 
-export default async function Home() {
+export default async function HomePage() {
   const barbershop = await db.barbershop.findMany({});
 
   return (
