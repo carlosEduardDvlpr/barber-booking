@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Footer } from './_components/footer';
+import { AuthProvider } from './_providers/auth';
 
 export const metadata: Metadata = {
   title: 'Agendamento Barbearia',
@@ -21,8 +22,10 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={`${inter_font.className} dark`}>
-        {children}
-        <Footer />
+        <AuthProvider>
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
