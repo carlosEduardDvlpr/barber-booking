@@ -23,6 +23,7 @@ CREATE TABLE "Service" (
     "price" DECIMAL(10,2) NOT NULL,
     "barbershopId" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "imageUrl" TEXT NOT NULL,
 
     CONSTRAINT "Service_pkey" PRIMARY KEY ("id")
 );
@@ -32,8 +33,9 @@ CREATE TABLE "Booking" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "serviceId" TEXT NOT NULL,
-    "date" TIMESTAMP(3) NOT NULL,
     "barbershopId" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "imageUrl" TEXT NOT NULL,
 
     CONSTRAINT "Booking_pkey" PRIMARY KEY ("id")
 );
