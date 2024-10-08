@@ -10,7 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/app/_components/ui/sheet';
-import { Barbershop, Service } from '@prisma/client';
+import { Barbershop, Booking, Service } from '@prisma/client';
 import { ptBR } from 'date-fns/locale';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -21,6 +21,7 @@ import { saveBooking } from '../_actions/save-booking';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { getDayBookings } from '../_actions/get-day-bookings';
 
 interface ServiceItemProps {
   barbershop: Barbershop;
@@ -39,6 +40,21 @@ export const ServiceItem = ({
   const [hour, setHour] = React.useState<string | undefined>();
   const [submitIsLoading, setSubmitIsLoading] = React.useState(false);
   const [sheetIsOpen, setSheetIsOpen] = React.useState(false);
+  const [dayBookings, setDayBookings] = React.useState<Booking[]>([]);
+
+  React.useEffect(() => {
+    if (!date) {
+      return;
+    }
+
+    const refreshAvailableHours = async () => {
+      const _dayBookings = await getDayBookings(barbershop.id, date);
+
+      setDayBookings(_dayBookings);
+    };
+
+    refreshAvailableHours();
+  }, [date, barbershop.id]);
 
   const handleDateClick = (date: Date | undefined) => {
     setDate(date);
@@ -94,8 +110,27 @@ export const ServiceItem = ({
   };
 
   const timeList = React.useMemo(() => {
-    return date ? generateDayTimeList(date) : [];
-  }, [date]);
+    if (!date) {
+      return [];
+    }
+    return generateDayTimeList(date).filter((time) => {
+      const timeHour = +time.split(':')[0];
+      const timeMinutes = +time.split(':')[1];
+
+      const booking = dayBookings.find((booking) => {
+        const bookingHour = booking.date.getHours();
+        const bookingMinutes = booking.date.getMinutes();
+
+        return bookingHour === timeHour && bookingMinutes === timeMinutes;
+      });
+
+      if (!booking) {
+        return true;
+      }
+
+      return false;
+    });
+  }, [date, dayBookings]);
 
   return (
     <Card>
