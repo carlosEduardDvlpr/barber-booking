@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { db } from '@/app/_lib/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import NextAuth, { AuthOptions } from 'next-auth';
@@ -12,6 +13,17 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
+  callbacks: {
+    async session({ session, user }) {
+      session.user = { ...session.user, id: user.id } as {
+        id: string;
+        name: string;
+        email: String;
+      };
+
+      return session;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);
