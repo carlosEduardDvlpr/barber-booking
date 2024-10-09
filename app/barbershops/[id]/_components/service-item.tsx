@@ -201,7 +201,7 @@ export const ServiceItem = ({
                   </div>
                   {/* mostrar horarios apenas se alguma data estiver selecionada */}
                   {date && (
-                    <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden py-6 px-5 border-t border-solid border-secondary">
+                    <div className="flex gap-3 overflow-x-auto py-6 px-5 border-t border-solid border-secondary">
                       {timeList.map((time) => (
                         <Button
                           variant={hour === time ? 'default' : 'outline'}
