@@ -10,24 +10,21 @@ import { authOptions } from '../api/auth/[...nextauth]/route';
 
 export default async function HomePage() {
   const session = await getServerSession(authOptions);
-
-  const [barbershops, confirmedBookings] = await Promise.all([
-    db.barbershop.findMany({}),
-    session?.user
-      ? db.booking.findMany({
-          where: {
-            userId: (session?.user as any).id,
-            date: {
-              gte: new Date(),
-            },
+  const barbershop = await db.barbershop.findMany({});
+  const confirmedBookings = session?.user
+    ? await db.booking.findMany({
+        where: {
+          userId: (session?.user as any).id,
+          date: {
+            gte: new Date(),
           },
-          include: {
-            service: true,
-            barbershop: true,
-          },
-        })
-      : Promise.resolve([]),
-  ]);
+        },
+        include: {
+          service: true,
+          barbershop: true,
+        },
+      })
+    : [];
 
   return (
     <div>
@@ -62,7 +59,7 @@ export default async function HomePage() {
         </h2>
 
         <div className="flex px-5 gap-2 overflow-x-auto">
-          {barbershops.map((barbershop) => (
+          {barbershop.map((barbershop) => (
             <BarbershopItem barbershop={barbershop} />
           ))}
         </div>
@@ -74,7 +71,7 @@ export default async function HomePage() {
         </h2>
 
         <div className="flex px-5 gap-2 overflow-x-auto">
-          {barbershops.map((barbershop) => (
+          {barbershop.map((barbershop) => (
             <BarbershopItem barbershop={barbershop} />
           ))}
         </div>
