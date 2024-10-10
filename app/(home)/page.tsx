@@ -31,7 +31,11 @@ export default async function HomePage() {
       <Header />
 
       <div className="px-5 pt-5">
-        <h2 className="text-xl font-bold">{session?.user ? "Olá, " + session.user.name?.split(' ')[0] + " !" : 'Olá, vamos agendar um corte hoje ?'}</h2>
+        <h2 className="text-xl font-bold">
+          {session?.user
+            ? 'Olá, ' + session.user.name?.split(' ')[0] + ' !'
+            : 'Olá, vamos agendar um corte hoje ?'}
+        </h2>
         <p className="text-sm capitalize">
           {format(new Date(), "EEEE',' dd 'de' MMMM", { locale: ptBR })}
         </p>
@@ -62,7 +66,9 @@ export default async function HomePage() {
 
         <div className="flex px-5 gap-2 overflow-x-auto">
           {barbershop.map((barbershop) => (
-            <BarbershopItem barbershop={barbershop} />
+            <div key={barbershop.id} className="min-w-[167px] max-w-[167px]">
+              <BarbershopItem barbershop={barbershop} />
+            </div>
           ))}
         </div>
       </div>
@@ -74,7 +80,9 @@ export default async function HomePage() {
 
         <div className="flex px-5 gap-2 overflow-x-auto">
           {barbershop.map((barbershop) => (
-            <BarbershopItem barbershop={barbershop} />
+            <div key={barbershop.id} className="min-w-[167px] max-w-[167px]">
+              <BarbershopItem barbershop={barbershop} />
+            </div>
           ))}
         </div>
       </div>
