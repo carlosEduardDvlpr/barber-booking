@@ -20,6 +20,18 @@ import { cancelBooking } from '../_actions/cancel-booking';
 import { toast } from 'sonner';
 import React from 'react';
 import { Loader2 } from 'lucide-react';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog';
 
 interface BookingItemProps {
   booking: Prisma.BookingGetPayload<{
@@ -153,17 +165,45 @@ export const BookingItem = ({ booking }: BookingItemProps) => {
               Voltar
             </Button>
           </SheetClose>
-          <Button
-            disabled={!isBookingConfirmed || isDeleteLoading}
-            onClick={handleCancelClick}
-            className="w-full"
-            variant="destructive"
-          >
-            {isDeleteLoading && (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            Cancelar reserva
-          </Button>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                disabled={!isBookingConfirmed || isDeleteLoading}
+                className="w-full"
+                variant="destructive"
+              >
+                Cancelar reserva
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="w-[90%]">
+              <DialogHeader>
+                <DialogTitle>Deseja cancelar essa reserva ?</DialogTitle>
+                <DialogDescription>
+                  uma vez cancelada, não será possível reverter essa ação.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="flex-row gap-3">
+                <DialogClose asChild>
+                  <Button className="w-full" variant="secondary">
+                    Voltar
+                  </Button>
+                </DialogClose>
+                <Button
+                  className="w-full"
+                  variant="destructive"
+                  onClick={handleCancelClick}
+                  disabled={isDeleteLoading}
+                >
+                  {' '}
+                  {isDeleteLoading && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  Confirmar
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </SheetFooter>
       </SheetContent>
     </Sheet>

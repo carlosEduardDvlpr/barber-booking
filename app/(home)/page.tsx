@@ -42,9 +42,11 @@ export default async function HomePage() {
       </div>
 
       <div className="mt-6">
-        <h2 className="pl-5 text-xs uppercase text-gray-400 font-bold mb-3">
-          Agendamentos
-        </h2>
+        {confirmedBookings.length > 0 && (
+          <h2 className="pl-5 text-xs uppercase text-gray-400 font-bold mb-3">
+            Agendamentos
+          </h2>
+        )}
 
         <div className="px-5 flex gap-3 overflow-x-auto">
           {confirmedBookings.map((booking) => (
