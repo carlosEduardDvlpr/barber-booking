@@ -1,4 +1,4 @@
-import { getServerSession } from 'next-auth';
+import { DefaultSession, getServerSession } from 'next-auth';
 import { Header } from '../_components/header';
 import { authOptions } from '../_lib/auth';
 import { redirect } from 'next/navigation';
@@ -14,7 +14,7 @@ const BookingsPage = async () => {
   const [confirmedBookings, finishedBookings] = await Promise.all([
     db.booking.findMany({
       where: {
-        userId: (session.user as any).id,
+        userId: (session.user as DefaultSession['user'] & { id: string }).id,
         date: {
           gte: new Date(),
         },
@@ -26,7 +26,7 @@ const BookingsPage = async () => {
     }),
     db.booking.findMany({
       where: {
-        userId: (session.user as any).id,
+        userId: (session.user as DefaultSession['user'] & { id: string }).id,
         date: {
           lt: new Date(),
         },

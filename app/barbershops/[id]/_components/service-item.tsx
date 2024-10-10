@@ -22,6 +22,7 @@ import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { getDayBookings } from '../_actions/get-day-bookings';
+import { DefaultSession } from 'next-auth';
 
 interface ServiceItemProps {
   barbershop: Barbershop;
@@ -87,7 +88,7 @@ export const ServiceItem = ({
         serviceId: service.id,
         barbershopId: service.barbershopId,
         date: newDate,
-        userId: (data.user as any).id,
+        userId: (data.user as DefaultSession['user'] & { id: string }).id,
       });
 
       setSheetIsOpen(false);
